@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const barStyle = StyleSheet.create({
     container: {
         backgroundColor: "white",
-        width: "90%",
+        width: "95%",
         alignSelf: "center",
         height: 60,
         borderRadius: 10,

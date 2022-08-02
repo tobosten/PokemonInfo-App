@@ -14,6 +14,11 @@ const styles = StyleSheet.create({
         height: 20,
         width: "80%",
         borderRadius: 50,
+    },
+    statText: {
+        color: "white",
+        fontWeight: "600",
+        marginLeft: 8
     }
 })
 

@@ -24,42 +24,48 @@ const PokemonSearch = () => {
 
 
     // get pokemon info
-    function fetchPokemon(string) {
-        axios.get(`https://pokeapi.co/api/v2/pokemon/${string}`)
-            .then((resp) => {
-                console.log(resp.data);
-                console.log(resp.data.sprites.front_default);
+    async function fetchPokemon(string) {
 
-                let pokemonTypeArray = []
-                let typeData = resp.data.types
-                let statsData = resp.data.stats
+        let lowerString = string.toLowerCase()
 
-                typeData.forEach((item) => {
-                    pokemonTypeArray.push({ type: item.type.name, url: item.type.url })
+        try {
+            await axios.get(`https://pokeapi.co/api/v2/pokemon/${lowerString}`)
+                .then((resp) => {
+                    /* console.log(resp.data.id); */
+
+                    let pokemonTypeArray = []
+                    let typeData = resp.data.types
+                    let statsData = resp.data.stats
+
+                    typeData.forEach((item) => {
+                        pokemonTypeArray.push({ type: item.type.name, url: item.type.url })
+                    })
+
+                    setSearchPokemon({
+                        id: resp.data.id,
+                        name: resp.data.name.charAt(0).toUpperCase() + resp.data.name.slice(1),
+                        types: pokemonTypeArray,
+                        sprite_front: resp.data.sprites.other["official-artwork"].front_default,
+                        stats: {
+                            hp: statsData[0].base_stat,
+                            attack: statsData[1].base_stat,
+                            defense: statsData[2].base_stat,
+                            special_attack: statsData[3].base_stat,
+                            special_defense: statsData[4].base_stat,
+                            speed: statsData[5].base_stat,
+                        }
+                    })
                 })
+        } catch {
 
-                console.log(pokemonTypeArray);
+        }
 
-                setSearchPokemon({
-                    name: resp.data.name.charAt(0).toUpperCase() + resp.data.name.slice(1),
-                    types: pokemonTypeArray,
-                    sprite_front: resp.data.sprites.front_default,
-                    stats: {
-                        hp: statsData[0].base_stat,
-                        attack: statsData[1].base_stat,
-                        defense: statsData[2].base_stat,
-                        special_attack: statsData[3].base_stat,
-                        special_defense: statsData[4].base_stat,
-                        speed: statsData[5].base_stat,
-                    }
-                })
-            })
     }
 
 
 
     return (
-        <View style={{}}>
+        <View style={{ }}>
             <View style={{ width: "100%", marginVertical: 25 }}>
                 <PokemonSearchBar
                     valueString={searchString}
@@ -73,22 +79,25 @@ const PokemonSearch = () => {
             </View>
 
             {searching == true ? (
-                <View style={[{ backgroundColor: "white", margin: 10, borderRadius: 8, paddingTop: 20,}, borderShadow.depth6]}>
+                <View style={[{ backgroundColor: "white", margin: 10, borderRadius: 8, paddingTop: 20, }, borderShadow.depth6]}>
                     <View style={{
                         flexDirection: "row"
                     }}>
-                        <View style={{ }}>
+                        <View style={{ flex: 1, justifyContent: 'center', }}>
+
+                            {/* name and id */}
                             <View style={{ flex: 0.2, alignSelf: "center", justifyContent: "center" }}>
-                                <Text style={{ fontSize: 24 }}>{searchPokemon.name}</Text>
+                                <Text style={{ fontSize: 24, fontWeight: "600" }}>{searchPokemon.name}</Text>
+                                <Text style={{ fontStyle: "italic" }}>#{searchPokemon.id}</Text>
                             </View>
                             <View style={{ flex: 1, alignItems: "center", justifyContent: "center", }}>
                                 <Image
                                     source={{ uri: searchPokemon.sprite_front }}
-                                    style={{ height: 160, width: 190 }}
+                                    style={{ height: 160, width: 160 }}
                                 />
 
                                 {/* types */}
-                                <View style={{ flexDirection: "row", marginTop: 15}}>
+                                <View style={{ flexDirection: "row", marginTop: 15 }}>
                                     {searchPokemon.types.map((item, i) => {
                                         return (
                                             <Image
