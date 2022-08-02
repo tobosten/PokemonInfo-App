@@ -1,3 +1,11 @@
 
 
 poke info: https://image.winudf.com/v2/image/Y29tLmNvZGVwaWNrZXIucG9rZWRleF9zY3JlZW5fM184NTcxY3BiNw/screen-3.jpg?fakeurl=1&type=.webp
+
+
+hp: 255
+atk: 181
+def: 230
+sp attack: 180
+sp def: 230
+speed: 200

@@ -13,12 +13,12 @@ const Stack = createNativeStackNavigator()
 export default function App() {
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='search'>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Search" component={PokemonSearch} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='search'>
+          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Search" component={PokemonSearch} />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 

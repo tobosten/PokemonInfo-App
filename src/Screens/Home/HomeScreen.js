@@ -6,19 +6,6 @@ import borderShadow from '../../borderShadow';
 
 const HomeScreen = ({ navigation }) => {
 
-    useEffect(() => {
-        /* axios.get(`https://pokeapi.co/api/v2/pokemon/infernape`)
-          .then((resp) => {
-            console.log(resp.data);
-            console.log(resp.data.sprites.front_default);
-    
-            let pn = resp.data.name
-    
-    
-            setImageFront(resp.data.sprites.front_default)
-            setName(pn.charAt(0).toUpperCase() + pn.slice(1))
-          }) */
-    }, [])
 
     return (
         <View style={{
