@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, Image, FlatList, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, ScrollView, Image, FlatList, ActivityIndicator, Animated, Easing } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './styles'
 import PokemonSearchBar from '../../components/PokemonSearchBar'
 import axios from 'axios'
@@ -11,7 +11,8 @@ import borderShadow from '../../borderShadow'
 
 const PokemonSearch = () => {
 
-    const [searchString, setSearchString] = useState("")
+    /* const [searchString, setSearchString] = useRef("").current; */
+    const [searchString, setSearchString] = useState("");
 
     const [searching, setSearching] = useState(false)
 
@@ -25,14 +26,10 @@ const PokemonSearch = () => {
 
     // get pokemon info
     async function fetchPokemon(string) {
-
         let lowerString = string.toLowerCase()
-
         try {
             await axios.get(`https://pokeapi.co/api/v2/pokemon/${lowerString}`)
                 .then((resp) => {
-                    /* console.log(resp.data.id); */
-
                     let pokemonTypeArray = []
                     let typeData = resp.data.types
                     let statsData = resp.data.stats
@@ -57,23 +54,46 @@ const PokemonSearch = () => {
                     })
                 })
         } catch {
-
+            /* fix card flash */
+            setSearching(false)
         }
-
     }
 
 
+    const spinValue = useRef(new Animated.Value(0)).current;
+    Animated.loop(
+        Animated.timing(
+            spinValue, {
+            toValue: 1,
+            duration: 3000,
+            easing: Easing.linear,
+            useNativeDriver: true,
+        }
+        )
+    ).start()
+    const spin = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "360deg"]
+    })
+
 
     return (
-        <View style={{ }}>
+        <View style={{}}>
             <View style={{ width: "100%", marginVertical: 25 }}>
                 <PokemonSearchBar
                     valueString={searchString}
                     valueStringChange={setSearchString}
                     searchFunction={() => {
+                        console.log(searchString);
+                        /* let pokemonName = searchString */
 
-                        fetchPokemon(searchString)
-                        setSearching(true)
+                        if (searchString.length > 0) {
+                            fetchPokemon(searchString)
+                            setSearching(true)
+                        } else {
+                            console.log("Hello");
+                        }
+
                     }}
                 />
             </View>
@@ -126,15 +146,13 @@ const PokemonSearch = () => {
                     </View>
 
                 </View>
-
-
-
             ) : (
                 <View style={{ alignItems: "center", justifyContent: "center" }}>
-                    <Image
+                    <Animated.Image
                         source={require("../../assets/grayBall.jpg")}
-                        style={{ width: 200, height: 200, marginTop: 50 }}
+                        style={[{ width: 200, height: 200, marginTop: 50 }, { transform: [{ rotate: spin }] }]}
                     />
+
 
                 </View>
             )

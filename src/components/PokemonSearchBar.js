@@ -4,7 +4,7 @@ import barStyle from './barStyles'
 import borderShadow from '../borderShadow'
 
 
-const PokemonSearchBar = ({valueString, valueStringChange, searchFunction}) => {
+const PokemonSearchBar = ({valueString, valueStringChange, searchFunction, ref}) => {
 
     
 

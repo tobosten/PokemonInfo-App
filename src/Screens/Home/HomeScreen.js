@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
                 onPress={() => {
                     navigation.navigate("Search")
                 }}>
-                    <Text style={styles.redirectButtonsText}>Pokemon search</Text>
+                    <Text style={styles.redirectButtonsText}>Find a pokemon</Text>
 
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.redirectButtons, borderShadow.depth6]}>

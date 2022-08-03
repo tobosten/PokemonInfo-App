@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
     statText: {
         color: "white",
         fontWeight: "600",
-        marginLeft: 8
+        marginLeft: 8,
+        position: "absolute"
     }
 })
 
