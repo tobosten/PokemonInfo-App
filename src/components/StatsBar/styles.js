@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "600",
         marginLeft: 8,
-        position: "absolute"
+        position: "absolute",
+        fontWeight: "600"
     }
 })
 

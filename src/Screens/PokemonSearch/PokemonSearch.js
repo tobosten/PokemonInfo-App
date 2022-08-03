@@ -7,15 +7,15 @@ import { typeText } from '../../assets/types/typeImages'
 import { typeIcons } from '../../assets/types/typeIcons'
 import StatsBar from '../../components/StatsBar/StatsBar'
 import borderShadow from '../../borderShadow'
+import { useToast } from 'react-native-toast-notifications'
 
 
 const PokemonSearch = () => {
 
     /* const [searchString, setSearchString] = useRef("").current; */
+    /* const searchString = useRef("").current */
     const [searchString, setSearchString] = useState("");
-
     const [searching, setSearching] = useState(false)
-
     const [searchPokemon, setSearchPokemon] = useState({
         name: "",
         types: [],
@@ -23,43 +23,49 @@ const PokemonSearch = () => {
         stats: {}
     })
 
+    const toast = useToast();
+
 
     // get pokemon info
     async function fetchPokemon(string) {
         let lowerString = string.toLowerCase()
-        try {
-            await axios.get(`https://pokeapi.co/api/v2/pokemon/${lowerString}`)
-                .then((resp) => {
-                    let pokemonTypeArray = []
-                    let typeData = resp.data.types
-                    let statsData = resp.data.stats
+        await axios.get(`https://pokeapi.co/api/v2/pokemon/${lowerString}`)
+            .then((resp) => {
+                let pokemonTypeArray = []
+                let typeData = resp.data.types
+                let statsData = resp.data.stats
 
-                    typeData.forEach((item) => {
-                        pokemonTypeArray.push({ type: item.type.name, url: item.type.url })
-                    })
-
-                    setSearchPokemon({
-                        id: resp.data.id,
-                        name: resp.data.name.charAt(0).toUpperCase() + resp.data.name.slice(1),
-                        types: pokemonTypeArray,
-                        sprite_front: resp.data.sprites.other["official-artwork"].front_default,
-                        stats: {
-                            hp: statsData[0].base_stat,
-                            attack: statsData[1].base_stat,
-                            defense: statsData[2].base_stat,
-                            special_attack: statsData[3].base_stat,
-                            special_defense: statsData[4].base_stat,
-                            speed: statsData[5].base_stat,
-                        }
-                    })
+                typeData.forEach((item) => {
+                    pokemonTypeArray.push({ type: item.type.name, url: item.type.url })
                 })
-        } catch {
-            /* fix card flash */
-            setSearching(false)
-        }
+
+                setSearchPokemon({
+                    id: resp.data.id,
+                    name: resp.data.name.charAt(0).toUpperCase() + resp.data.name.slice(1),
+                    types: pokemonTypeArray,
+                    sprite_front: resp.data.sprites.other["official-artwork"].front_default,
+                    stats: {
+                        hp: statsData[0].base_stat,
+                        attack: statsData[1].base_stat,
+                        defense: statsData[2].base_stat,
+                        special_attack: statsData[3].base_stat,
+                        special_defense: statsData[4].base_stat,
+                        speed: statsData[5].base_stat,
+                    }
+                })
+            }).then(() => {
+                setSearching(true)
+            }).catch(() => {
+                if (searchString.length > 0) {
+                    toast.show(`${searchString} not found`)
+                } else {
+                    toast.show("Enter pokemon name")
+                }
+
+            })
     }
 
-
+    /* Animation for poke ball image */
     const spinValue = useRef(new Animated.Value(0)).current;
     Animated.loop(
         Animated.timing(
@@ -84,16 +90,7 @@ const PokemonSearch = () => {
                     valueString={searchString}
                     valueStringChange={setSearchString}
                     searchFunction={() => {
-                        console.log(searchString);
-                        /* let pokemonName = searchString */
-
-                        if (searchString.length > 0) {
-                            fetchPokemon(searchString)
-                            setSearching(true)
-                        } else {
-                            console.log("Hello");
-                        }
-
+                        fetchPokemon(searchString)
                     }}
                 />
             </View>
@@ -152,8 +149,6 @@ const PokemonSearch = () => {
                         source={require("../../assets/grayBall.jpg")}
                         style={[{ width: 200, height: 200, marginTop: 50 }, { transform: [{ rotate: spin }] }]}
                     />
-
-
                 </View>
             )
             }

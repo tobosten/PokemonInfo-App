@@ -36,7 +36,7 @@ const StatsBar = ({ hp, attack, defense, special_attack, special_defense, speed 
 
             {/* Health */}
             <View style={styles.statContainer}>
-                <Text style={{ width: "80%", paddingLeft: 5, }}>HP</Text>
+                <Text style={{ width: "80%", paddingLeft: 5 }}>HP</Text>
                 <View style={[styles.statBarContainer, borderShadow.depth6, { backgroundColor: "#c8f5c6" }]}>
                     <View style={{ backgroundColor: "#2bad26", height: 20, width: `${hp_percentage}%`, borderRadius: 10 }} />
                     <Text style={styles.statText}>{hp}</Text>
