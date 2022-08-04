@@ -74,13 +74,24 @@ const PokemonSearch = () => {
                         console.log(resp.data.evolution_chain.url);
                         axios.get(resp.data.evolution_chain.url)
                             .then((resp) => {
-                                let evo1 = [resp.data.chain.species.name, 1]
-                                let evo2 = [resp.data.chain.evolves_to[0].species.name, 2]
-                                let evo3 = [resp.data.chain.evolves_to[0].evolves_to[0].species.name, 3]
 
+                                let evo1 = [resp.data.chain.species.name, 1]
                                 evolutionChain(evo1)
-                                evolutionChain(evo2)
-                                evolutionChain(evo3)
+
+                                try {
+                                    let evo2 = [resp.data.chain.evolves_to[0].species.name, 2]
+                                    evolutionChain(evo2)
+                                } catch { }
+
+                                try {
+                                    let evo3 = [resp.data.chain.evolves_to[0].evolves_to[0].species.name, 3]
+                                    evolutionChain(evo3)
+                                } catch { }
+
+
+
+
+
                                 /* console.log(pokemonEvolutions); */
                             })
                     }).then(() => {
@@ -159,7 +170,7 @@ const PokemonSearch = () => {
         } catch {
             return (
                 <View style={{ flex: 1, }} >
-                    <ActivityIndicator size="small" color="#0000ff" />
+                    {/* <ActivityIndicator size="small" color="#0000ff" /> */}
                 </View>
 
             )
